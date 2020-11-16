@@ -1,0 +1,282 @@
+package version_01;
+
+import java.io.File;
+
+public class Main {
+	public static final int SCREEN_WIDTH = 1500;
+	public static final int SCREEN_HEIGHT = 1000;
+	
+	public static void main(String[] args) {
+		LoginFrame ui = new LoginFrame();
+		SearchFrame sf = new SearchFrame();
+		sf.Run();
+//		ui.run();
+		
+	}
+
+}
+
+package version_01;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+
+import javax.swing.*;
+
+public class SearchFrame extends JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private JFrame f;
+	private JPanel jp1, jp2, jp3;
+	private JTabbedPane pane;
+	private JLabel la_start, la_goal;
+	private JTextField tf_start, tf_goal;
+	private JButton bt_ok, bt_ch, bt_reco, bt_exch;
+	private Font f1, f2, f3;
+
+	SearchFrame() {
+		f = new JFrame();
+		jp1 = new JPanel();
+		jp2 = new JPanel();
+		jp3 = new JPanel();
+		pane = new JTabbedPane();
+		la_start = new JLabel("           출발지");
+		la_goal = new JLabel("           목적지");
+		tf_start = new JTextField();
+		tf_goal = new JTextField();
+		bt_ok = new JButton("검 색");
+		bt_ch = new JButton("정류장");
+		bt_exch = new JButton("교체");
+		bt_reco = new JButton("기 록");
+		f1 = new Font("돋음", Font.PLAIN, 20);
+		f2 = new Font("궁서", Font.PLAIN, 15);
+		f3 = new Font("바탕", Font.PLAIN, 15);
+	}
+
+	void Run() {
+		this.SetFrame();
+		this.SetFont();
+		this.SetLocation();
+		this.Setpanel();
+
+		f.add(jp3);
+
+	}
+
+	void SetFont() {
+		la_start.setFont(f1);
+		tf_start.setFont(f1);
+		la_goal.setFont(f1);
+		tf_goal.setFont(f1);
+	}
+
+	void Setpanel() {
+		this.SetLocation();
+		jp3.setLayout(null);
+		jp2.setLayout(new GridLayout(5, 1));
+		jp2.add(la_start);
+		jp2.add(tf_start);
+		jp2.add(la_goal);
+		jp2.add(tf_goal);
+		jp2.add(bt_ok);
+		jp3.add(bt_ch);
+		jp3.add(bt_reco);
+		jp3.add(jp2);
+		jp3.add(bt_exch);
+	}
+
+	void SetFrame() {
+		f.setSize(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
+		f.setLocationRelativeTo(null);
+		f.setLayout(null);
+//		f.setResizable(false);
+		f.setVisible(true);
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+
+	public JTabbedPane createTabbedPane() {
+
+		pane = new JTabbedPane();
+		pane.add("BUS SEARCH", new JLabel("Tab menu 1"));
+
+		return pane;
+	}
+
+	void SetLocation() {
+		
+		jp3.setBounds(1000, 0, 500, 1000);
+		jp2.setBounds(0, 100, 300, 500);
+		bt_ch.setBounds(0, 800, 50, 50);
+		
+		bt_reco.setBounds(250, 800, 50, 50);
+		bt_exch.setBounds(350, 330, 50, 50);
+	}
+}
+
+
+package version_01;
+
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
+public class LoginFrame extends JFrame implements ActionListener{
+	private JFrame frame;
+	private JPanel jp_1,jp_2,jp_3;
+	private JLabel la_title, la_ID, la_PASS;
+	private JButton bt_OK, bt_AD, bt_FIN;
+	private JTextField tf_ID;
+	private JPasswordField pass;
+	private Font f1,f2,f3;
+	private ImageIcon I_title, I_ID,I_PASS, I_OK;
+	private Color c;
+	MemberDAO dao;
+	private Container contentPane;
+
+	
+	public LoginFrame(){
+		frame = new JFrame("Bus Search");
+		I_title = new ImageIcon(Main.class.getResource("..//Image/title.png"));
+		I_ID = new ImageIcon(Main.class.getResource("../Image/ID.png"));
+		I_PASS = new ImageIcon(Main.class.getResource("../Image/Pass.png"));
+		I_OK = new ImageIcon(Main.class.getResource("../Image/login.png"));
+		la_title = new JLabel(I_title);
+		la_PASS = new JLabel(I_PASS);
+		la_ID = new JLabel(I_ID);
+		bt_OK = new JButton(I_OK);
+		bt_AD = new JButton("회원가입");
+		bt_FIN = new JButton("찾기");
+		tf_ID = new JTextField(15);
+		tf_ID.setLocation(100, 100);
+		pass = new JPasswordField(15);
+		jp_1 = new JPanel();
+		jp_2 = new JPanel();
+		jp_3 = new JPanel();
+		f1 = new Font("돋음",Font.PLAIN, 15);
+		f2 = new Font("궁서",Font.PLAIN, 15);
+		f3 = new Font("바탕",Font.PLAIN, 15);
+		c = new Color(051,153,051);
+
+	}
+	
+	public void run() {
+		frame.getContentPane().setBackground(c);
+		frame.setSize(600,1000);
+		frame.setLocationRelativeTo(null);
+		frame.setLayout(null);
+		frame.setResizable(false);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		this.setBounds();
+		this.SetFont();
+		this.PanelAdd();
+		this.FrameAdd();
+		
+//		this.eventUp();
+		
+	}
+	
+	void SetFont() {
+		tf_ID.setFont(f1);
+		pass.setFont(f1);
+		la_ID.setFont(f1);
+		la_PASS.setFont(f1);
+	}
+	
+	void setBounds() {
+		bt_OK.setBounds(220,450, 150,150);
+		bt_OK.setBorderPainted(false);
+		bt_OK.setContentAreaFilled(false);
+		bt_OK.setOpaque(false);
+		bt_AD.setBounds(100, 800, 100, 100);
+		bt_FIN.setBounds(400, 800, 100, 100);
+		jp_1.setBounds(100, 300, 400, 50);
+		jp_2.setBounds(100, 350, 400, 50);
+		jp_1.setBackground(c);
+		jp_2.setBackground(c);
+		
+		
+		la_title.setBounds(0, 50, 600, 100);
+	}
+	
+	void PanelAdd() {
+		jp_1.add(la_ID);
+		jp_1.add(tf_ID);
+		jp_2.add(la_PASS);
+		jp_2.add(pass);
+		jp_3.setBackground(c);
+		
+	}
+	
+	void FrameAdd() {
+		frame.add(la_title);
+		frame.add(jp_1);
+		frame.add(jp_2);
+		frame.add(bt_AD);
+		frame.add(bt_FIN);
+		frame.add(bt_OK);
+		frame.setVisible(true);
+		
+	}
+	
+//	void eventUp() {
+//		bt_OK.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				String id = tf_ID.getText();
+//				String pw = new String(pass.getPassword());
+//				HashMap<String, String> map = new HashMap<String, String>();
+//				
+//				MemberDAO dao = new MemberDAO();
+//				ArrayList<MemberVo> members = new ArrayList<MemberVo>();
+//				try {
+//					members = dao.members();
+//					
+//					for(int i=0;i<members.size();i++) {
+//						map.put(members.get(i).getID(), members.get(i).getPASSWORD());
+//					}
+//					if(!map.containsKey(id)) {
+//						JOptionPane.showMessageDialog(null, "�Է��Ͻ� ���̵� �����ϴ�.", "ID����", JOptionPane.YES_OPTION);
+//					}else {
+//						if(!(map.get(id)).equals(anObject))
+//					}
+//				}
+//				
+//				
+//				tf_ID.setText("");
+//				pass.setText("");
+//			}
+//			
+//		});
+//		bt_FIN.addActionListener(this);
+//		bt_AD.addActionListener(this);
+//		
+//		tf_ID.addActionListener(this);
+//		pass.addActionListener(this);
+//	}
+//
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+}
+
